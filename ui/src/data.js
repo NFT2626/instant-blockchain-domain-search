@@ -4,7 +4,7 @@ const GRAPHQL_ENDPOINT = 'http://localhost:8000/subgraphs/name/saleel/domains';
 
 const axiosInstance = axios.create({
   baseURL: GRAPHQL_ENDPOINT,
-  method: 'POST'
+  method: 'POST',
 });
 
 export async function getNameDetails(name) {
@@ -61,11 +61,12 @@ export async function getNameDetails(name) {
           }
         }
       }
-  ` }
+  `,
+    },
   });
 
   if (data.errors) {
-    throw new Error('Error while fetching data: ' + JSON.stringify(data.errors));
+    throw new Error(`Error while fetching data: ${JSON.stringify(data.errors)}`);
   }
 
   return data.data.domainName;

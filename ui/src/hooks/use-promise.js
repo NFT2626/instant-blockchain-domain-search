@@ -1,47 +1,24 @@
-// @ts-check
-
 import { useState, useEffect } from 'preact/hooks';
 import differenceInSeconds from 'date-fns/differenceInSeconds';
 
-
+// In-memory cache
+const CACHE = {};
 const cache = {
   get(key) {
-    if (!key) return undefined;
-
-    let cachedData;
-
-    try {
-      cachedData = window.localStorage.getItem(`cache.${key}`);
-      if (cachedData) {
-        cachedData = JSON.parse(cachedData);
-      }
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('Cannot read cache', error);
-    }
-
-    return cachedData;
+    return CACHE[key];
   },
 
   set(key, data) {
-    const newDoc = {
-      data,
+    CACHE[key] = {
       storedAt: new Date(),
+      data,
     };
-
-    try {
-      window.localStorage.setItem(`cache.${key}`, JSON.stringify(newDoc));
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error('Cannot set cache', err);
-    }
   },
 
   delete(key) {
-    window.localStorage.removeItem(`cache.${key}`);
+    delete CACHE[key];
   },
 };
-
 
 /**
  * @typedef UsePromiseOptions
@@ -52,7 +29,6 @@ const cache = {
  * @property [updateWithRevalidated = false] {boolean}
  * @property [cachePeriodInSecs = 10] {number}
  */
-
 
 /**
  * @template T
@@ -71,13 +47,12 @@ function usePromise(promise, options = {}) {
     cachedData = cache.get(cacheKey);
   }
 
-  const [result, setResult] = useState(cachedData ? cachedData.data : defaultValue);
-  const [fetchedAt, setFetchedAt] = useState(cachedData ? cachedData.storedAt : undefined);
+  const [result, setResult] = useState(defaultValue);
+  const [fetchedAt, setFetchedAt] = useState();
   const [isFetching, setIsFetching] = useState(false);
   const [error, setError] = useState();
 
   let didCancel = false;
-
 
   async function fetch() {
     if (cachedData) {
@@ -98,7 +73,7 @@ function usePromise(promise, options = {}) {
           setFetchedAt(new Date());
         }
 
-        if (cacheKey && (data !== null || data !== undefined)) {
+        if (cacheKey) {
           cache.set(cacheKey, data);
         }
       }
@@ -107,15 +82,15 @@ function usePromise(promise, options = {}) {
         // eslint-disable-next-line no-console
         console.error('Error on fetching data', e);
         setError(e);
-        // if (cacheKey) {
-        //   cache.delete(cacheKey);
-        // }
+
+        if (cacheKey) {
+          cache.delete(cacheKey);
+        }
       }
     }
 
     setIsFetching(false);
   }
-
 
   useEffect(() => {
     const allConditionsValid = conditions.every((condition) => {
@@ -129,11 +104,9 @@ function usePromise(promise, options = {}) {
 
     // eslint-disable-next-line consistent-return
     return () => {
-      // eslint-disable-next-line react-hooks/exhaustive-deps
       didCancel = true;
     };
   }, [...dependencies, ...conditions]);
-
 
   function reFetch() {
     if (cacheKey) {
@@ -143,11 +116,9 @@ function usePromise(promise, options = {}) {
     return fetch();
   }
 
-
-  return [result, {
-    isFetching, fetchedAt, reFetch, error,
+  return [cachedData ? cachedData.data : result, {
+    isFetching, fetchedAt: cachedData ? cachedData.storedAt : fetchedAt, reFetch, error,
   }];
 }
-
 
 export default usePromise;

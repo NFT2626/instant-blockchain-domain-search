@@ -3,10 +3,40 @@
 
 .container {
   padding-top: 10rem;
-  justify-content: center;
+  align-items: center;
   display: flex;
+  flex-direction: column;
 }
 
 .input-domain {
   max-width: 600px;
+  margin-bottom: 5rem;
+}
+
+.provider-container {
+  display: flex;
+  margin-bottom: 2rem;
+  max-width: 600px;
+  flex-wrap: wrap;
+}
+
+.tld-badge {
+  cursor: pointer;
+  padding: 10px 15px;
+  font-weight: 500;
+  border-radius: 5px;
+  background-color: #ecf0f1;
+  color: #000;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+}
+
+.tld-badge.is-available {
+  background-color: #2ecc71;
+  color: white;
+}
+
+.tld-badge.is-taken, .tld-badge.is-expired {
+  background-color: #e74c3c;
+  color: white;
 }
