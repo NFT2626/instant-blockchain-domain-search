@@ -47,10 +47,9 @@ function usePromise(promise, options = {}) {
     cachedData = cache.get(cacheKey);
   }
 
-  const [result, setResult] = useState(defaultValue);
-  const [fetchedAt, setFetchedAt] = useState();
-  const [isFetching, setIsFetching] = useState(false);
-  const [error, setError] = useState();
+  const [result, setResult] = useState({
+    data: defaultValue, fetchedAt: undefined, isFetching: false, error: undefined,
+  });
 
   let didCancel = false;
 
@@ -62,15 +61,16 @@ function usePromise(promise, options = {}) {
       }
     }
 
-    setIsFetching(true);
+    setResult((e) => ({ ...e, isFetching: true }));
 
     try {
       const data = await promise();
       if (!didCancel) {
         // In some cases newly fetched data don't have to be updated (updateWithRevalidated = false)
         if (updateWithRevalidated || cachedData === undefined) {
-          setResult(data);
-          setFetchedAt(new Date());
+          setResult((e) => ({
+            ...e, data, fetchedAt: new Date(), isFetching: false,
+          }));
         }
 
         if (cacheKey) {
@@ -81,15 +81,13 @@ function usePromise(promise, options = {}) {
       if (!didCancel) {
         // eslint-disable-next-line no-console
         console.error('Error on fetching data', e);
-        setError(e);
+        setResult((ex) => ({ ...ex, error: e, isFetching: false }));
 
         if (cacheKey) {
           cache.delete(cacheKey);
         }
       }
     }
-
-    setIsFetching(false);
   }
 
   useEffect(() => {
@@ -116,8 +114,11 @@ function usePromise(promise, options = {}) {
     return fetch();
   }
 
-  return [cachedData ? cachedData.data : result, {
-    isFetching, fetchedAt: cachedData ? cachedData.storedAt : fetchedAt, reFetch, error,
+  return [cachedData ? cachedData.data : result.data, {
+    isFetching: result.isFetching,
+    fetchedAt: cachedData ? cachedData.storedAt : result.fetchedAt,
+    error: result.error,
+    reFetch,
   }];
 }
 

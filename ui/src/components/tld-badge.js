@@ -9,7 +9,7 @@ function TLDBadge(props) {
   let className = 'tld-badge';
 
   if (isReady) {
-    const isExpired = tldInfo && (tldInfo.expires < (new Date().getTime() / 1000));
+    const isExpired = tldInfo && tldInfo.expires !== 0 && (tldInfo.expires < (new Date().getTime() / 1000));
 
     if (isAvailable) {
       className += ' is-available';
