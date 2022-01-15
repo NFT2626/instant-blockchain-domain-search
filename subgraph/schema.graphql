@@ -1,0 +1,22 @@
+type DomainTLD @entity {
+  id: ID!
+  tld: String!
+  owner: String!
+  expires: BigInt!
+}
+
+type DomainName @entity {
+  id: ID!
+  name: String!
+  eth: DomainTLD
+  crypto: DomainTLD
+  zil: DomainTLD
+  coin: DomainTLD
+  wallet: DomainTLD
+  bitcoin: DomainTLD
+  x: DomainTLD
+  _888: DomainTLD
+  nft: DomainTLD
+  dao: DomainTLD
+  blockchain: DomainTLD
+}

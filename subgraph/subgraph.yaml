@@ -1,0 +1,68 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: ENSRegistrarController
+    network: mainnet
+    source:
+      address: "0x283Af0B28c62C092C9727F1Ee09c02CA627EB7F5"
+      abi: ENSRegistrarController
+      startBlock: 9380470
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - NameRegistered
+        - NameRenewed
+        - OwnershipTransferred
+      abis:
+        - name: ENSRegistrarController
+          file: ./abis/ENSRegistrarController.json
+      eventHandlers:
+        - event: NameRegistered(string,indexed bytes32,indexed address,uint256,uint256)
+          handler: handleNameRegistered
+        - event: NameRenewed(string,indexed bytes32,uint256,uint256)
+          handler: handleNameRenewed
+      file: ./src/mapping.ts
+  - kind: ethereum
+    name: UnstoppableCNS
+    network: mainnet
+    source:
+      address: "0xD1E5b0FF1287aA9f9A268759062E4Ab08b9Dacbe"
+      abi: UnstoppableCNS
+      startBlock: 9082250
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - NewURI
+      abis:
+        - name: UnstoppableCNS
+          file: ./abis/UnstoppableCNS.json
+      eventHandlers:
+        - event: NewURI(indexed uint256,string)
+          handler: handleNewURI
+      file: ./src/mapping.ts
+  - kind: ethereum
+    name: UnstoppableUNS
+    network: mainnet
+    source:
+      address: "0x049aba7510f45BA5b64ea9E658E342F904DB358D"
+      abi: UnstoppableUNS
+      startBlock: 12779229
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - NewURI
+      abis:
+        - name: UnstoppableUNS
+          file: ./abis/UnstoppableUNS.json
+      eventHandlers:
+        - event: NewURI(indexed uint256,string)
+          handler: handleNewURI_UNS
+      file: ./src/mapping.ts
