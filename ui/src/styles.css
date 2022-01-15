@@ -1,0 +1,12 @@
+@import "~bulma/css/bulma.css";
+
+
+.container {
+  padding-top: 10rem;
+  justify-content: center;
+  display: flex;
+}
+
+.input-domain {
+  max-width: 600px;
+}
