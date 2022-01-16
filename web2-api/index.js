@@ -32,7 +32,7 @@ server.get('/', async (request) => {
 const start = async () => {
   try {
     console.log("Starting on port", process.env.PORT || 9000);
-    await server.listen(Number(process.env.PORT) || 9000);
+    await server.listen(Number(process.env.PORT) || 9000, '0.0.0.0');
   } catch (err) {
     server.log.error(err)
     process.exit(1)
