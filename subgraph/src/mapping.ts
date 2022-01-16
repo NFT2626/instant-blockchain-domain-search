@@ -56,8 +56,6 @@ export function handleCnsNameRenewed(event: NewURI): void {
     return;
   }
 
-  event.params.tokenId
-
   const domainParts = event.params.uri.split('.');
 
   if (domainParts.length !== 2) {

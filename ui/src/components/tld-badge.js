@@ -2,7 +2,7 @@ import { getRegistrationUrl, validateName } from '../utils';
 
 function TLDBadge(props) {
   const {
-    provider, name, isReady, tld, tldInfo,
+    provider, name, isReady, tld, tldInfo, listing,
   } = props;
 
   let isAvailable = !tldInfo;
@@ -23,15 +23,26 @@ function TLDBadge(props) {
       isAvailable = false;
       className += ' is-expired';
     }
+
+    if (listing) {
+      className += ' is-for-sale';
+    }
   }
 
   return (
     <a
       className={className}
-      href={getRegistrationUrl(provider, name, tld)}
+      href={getRegistrationUrl(provider, name, tld, listing)}
       target="_blank"
       rel="noreferrer"
     >
+      {listing && listing.currentPrice > 0 && (
+        <span className="domain-listing">
+          {listing.currentPrice}
+          {' '}
+          {listing.currency}
+        </span>
+      )}
       {tld}
     </a>
   );

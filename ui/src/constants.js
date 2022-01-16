@@ -42,3 +42,8 @@ export const TLDResponseMapping = {
   io: 'io',
   twitter: 'twitter',
 };
+
+export const NFTContractAddresses = {
+  [Providers.ENS]: '0x57f1887a8bf19b14fc0df6fd9b2acc9af147ea85',
+  [Providers.UnstoppableDomains]: '0xD1E5b0FF1287aA9f9A268759062E4Ab08b9Dacbe',
+};

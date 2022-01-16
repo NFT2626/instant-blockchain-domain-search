@@ -1,6 +1,10 @@
 import { Providers } from './constants';
 
-export function getRegistrationUrl(provider, name, tld) {
+export function getRegistrationUrl(provider, name, tld, listing) {
+  if (listing) {
+    return listing.link;
+  }
+
   if (provider === Providers.ENS) {
     return `https://app.ens.domains/name/${name}.${tld}/register`;
   }

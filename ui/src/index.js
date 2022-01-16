@@ -1,7 +1,9 @@
 import './styles.css';
 import { useState } from 'preact/hooks';
 import usePromise from './hooks/use-promise';
-import { getNameDetails, getNearNameDetails, getWeb2Details } from './data';
+import {
+  getDomainListings, getNameDetails, getNearNameDetails, getWeb2Details,
+} from './data';
 import TLDBadge from './components/tld-badge';
 import { TLDResponseMapping, ProviderTLDMapping, Providers } from './constants';
 
@@ -11,22 +13,27 @@ function App() {
   const [ethNameDetails, { isFetching: ethIsFetching, error: ethError, fetchedAt: ethFetchedAt }] = usePromise(() => getNameDetails(name), {
     conditions: [name],
     dependencies: [name],
-    cacheKey: name,
+    cacheKey: `${name}_eth`,
     cachePeriodInSecs: 60,
   });
 
   const [nearNameDetails, { isFetching: nearIsFetching, error: nearError, fetchedAt: nearFetchedAt }] = usePromise(() => getNearNameDetails(name), {
     conditions: [name],
     dependencies: [name],
-    cacheKey: name,
+    cacheKey: `${name}_near`,
     cachePeriodInSecs: 60,
   });
 
   const [web2NameDetails, { isFetching: web2IsFetching, error: web2Error, fetchedAt: web2FetchedAt }] = usePromise(() => getWeb2Details(name), {
     conditions: [name],
     dependencies: [name],
-    cacheKey: name,
+    cacheKey: `${name}_web2`,
     cachePeriodInSecs: 60,
+  });
+
+  const [domainListings] = usePromise(() => getDomainListings(name), {
+    conditions: [name],
+    defaultValue: [],
   });
 
   function onNameChange(e) {
@@ -61,15 +68,20 @@ function App() {
         <div className="tld-container">
           {Object.keys(ProviderTLDMapping).map((provider) => (
             <div className="provider-container">
-              {ProviderTLDMapping[provider].map((tld) => (
-                <TLDBadge
-                  isReady={isProviderReady[provider]}
-                  name={name}
-                  provider={provider}
-                  tld={tld}
-                  tldInfo={allProvideResult[TLDResponseMapping[tld]]}
-                />
-              ))}
+              {ProviderTLDMapping[provider].map((tld) => {
+                const domainListing = domainListings.find((d) => d.name === `${name}.${tld}`);
+
+                return (
+                  <TLDBadge
+                    isReady={isProviderReady[provider]}
+                    name={name}
+                    provider={provider}
+                    tld={tld}
+                    tldInfo={allProvideResult[TLDResponseMapping[tld]]}
+                    listing={domainListing}
+                  />
+                );
+              })}
             </div>
           ))}
         </div>
