@@ -15,14 +15,18 @@ server.get('/', async (request) => {
 
   if (!name) return {};
 
-  const [com, xyz, io, twitter] = await Promise.all([
-    utils.promisify(dns.resolveNs)(name + ".com").then(() => ({})).catch(() => Promise.resolve(false)),
-    utils.promisify(dns.resolveNs)(name + ".xyz").then(() => ({})).catch(() => Promise.resolve(false)),
-    utils.promisify(dns.resolveNs)(name + ".io").then(() => ({})).catch(() => Promise.resolve(false)),
-    roClient.v2.userByUsername(name).then(() => ({})).catch(() => Promise.resolve(false)),
-  ]);
-
-  return { name, com, xyz, io, twitter };
+  try {
+    const [com, xyz, io, twitter] = await Promise.all([
+      utils.promisify(dns.resolveNs)(name + ".com").then(() => ({})).catch(() => Promise.resolve(false)),
+      utils.promisify(dns.resolveNs)(name + ".xyz").then(() => ({})).catch(() => Promise.resolve(false)),
+      utils.promisify(dns.resolveNs)(name + ".io").then(() => ({})).catch(() => Promise.resolve(false)),
+      roClient.v2.userByUsername(name).then(() => ({})).catch(() => Promise.resolve(false)),
+    ]);
+    return { name, com, xyz, io, twitter };
+  } catch (error) {
+    console.error(error);
+    return {}
+  }
 });
 
 const start = async () => {
