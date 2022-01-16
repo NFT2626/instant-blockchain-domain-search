@@ -1,5 +1,5 @@
 import './styles.css';
-import { useState } from 'preact/hooks';
+import { useRef, useState } from 'preact/hooks';
 import usePromise from './hooks/use-promise';
 import {
   getDomainListings, getNameDetails, getNearNameDetails, getWeb2Details,
@@ -9,6 +9,7 @@ import { TLDResponseMapping, ProviderTLDMapping, Providers } from './constants';
 
 function App() {
   const [name, setName] = useState('');
+  const timer = useRef();
 
   const [ethNameDetails, { isFetching: ethIsFetching, error: ethError, fetchedAt: ethFetchedAt }] = usePromise(() => getNameDetails(name), {
     conditions: [name],
@@ -37,8 +38,12 @@ function App() {
   });
 
   function onNameChange(e) {
-    const newName = e.target.value;
-    setName(newName);
+    clearTimeout(timer.current);
+
+    timer.current = setTimeout(() => {
+      const newName = e.target.value;
+      setName(newName);
+    }, 500);
   }
 
   const allProvideResult = {
