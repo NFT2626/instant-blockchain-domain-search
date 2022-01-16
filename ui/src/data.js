@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { keccak256 } from "@ethersproject/keccak256";
-import { toUtf8Bytes } from "@ethersproject/strings";
-import { BigNumber } from "@ethersproject/bignumber";
-import { NFTContractAddresses, Providers } from "./constants";
+import { keccak256 } from '@ethersproject/keccak256';
+import { toUtf8Bytes } from '@ethersproject/strings';
+import { BigNumber } from '@ethersproject/bignumber';
+import { NFTContractAddresses, Providers } from './constants';
 
 const GRAPHQL_ENDPOINT = 'https://api.thegraph.com/subgraphs/name/saleel/domain-availability';
 const NEAR_RPC = 'https://rpc.mainnet.near.org/';
@@ -129,7 +129,6 @@ export async function getNearNameDetails(name) {
   };
 }
 
-
 let web2Controller;
 export async function getWeb2Details(name) {
   if (web2Controller) {
@@ -158,21 +157,21 @@ export async function getDomainListings(name) {
   let urlParams = [ensTokenId].map((e) => `token_ids=${e}`);
   urlParams = urlParams.concat([NFTContractAddresses[Providers.ENS]].map((e) => `asset_contract_addresses=${e}`));
 
-  const { data } = await axios.get(OPENSEA_API + `/assets?` + urlParams.join('&'), {
+  const { data } = await axios.get(`${OPENSEA_API}/assets?${urlParams.join('&')}`, {
     headers: {
-      'X-API-KEY': OPENSEA_TOKEN
-    }
+      'X-API-KEY': OPENSEA_TOKEN,
+    },
   });
 
   if (data && data.assets) {
-    return data.assets.map(datum => {
+    return data.assets.map((datum) => {
       if (!datum.orders && !datum.sell_orders) {
         return null;
       }
 
       let currentPrice = datum.orders?.[0]?.current_price;
       if (!currentPrice && datum.sell_orders) {
-        currentPrice = datum.sell_orders?.[0]?.current_price
+        currentPrice = datum.sell_orders?.[0]?.current_price;
       }
 
       currentPrice = Number(currentPrice ?? 0) / (10 ** 18); // Convert to normal price
@@ -182,7 +181,9 @@ export async function getDomainListings(name) {
         currentPrice,
         currency: 'Ξ',
         link: datum.permalink,
-      }
+      };
     }).filter(Boolean);
   }
+
+  return [];
 }
