@@ -1,13 +1,13 @@
 {
-  "name": "domain-search",
+  "name": "domain-availability",
   "license": "UNLICENSED",
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ saleel/domain-search",
-    "create-local": "graph create --node http://localhost:8020/ saleel/domain-search",
-    "remove-local": "graph remove --node http://localhost:8020/ saleel/domain-search",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 saleel/domain-search"
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ saleel/domain-availability",
+    "create-local": "graph create --node http://localhost:8020/ saleel/domain-availability",
+    "remove-local": "graph remove --node http://localhost:8020/ saleel/domain-availability",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 saleel/domain-availability"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.25.3",
