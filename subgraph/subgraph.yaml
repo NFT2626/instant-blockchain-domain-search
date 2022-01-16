@@ -16,7 +16,6 @@ dataSources:
       entities:
         - NameRegistered
         - NameRenewed
-        - OwnershipTransferred
       abis:
         - name: ENSRegistrarController
           file: ./abis/ENSRegistrarController.json

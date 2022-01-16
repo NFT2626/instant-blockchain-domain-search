@@ -21,6 +21,7 @@ export function handleEnsNameRegistered(event: NameRegistered): void {
   let tld = DomainTLD.load(tldId)
   if (!tld) {
     tld = new DomainTLD(tldId);
+    tld.tld = 'eth';
     tld.owner = event.params.owner.toHex();
     tld.expires = event.params.expires;
     entity.eth = tld.id;
@@ -69,7 +70,7 @@ export function handleCnsNameRenewed(event: NewURI): void {
   let entity = DomainName.load(name);
   if (!entity) {
     entity = new DomainName(name);
-    entity.name = event.params.uri;
+    entity.name = name;
   }
 
   const tldId = `${name}_${tldName}`;
