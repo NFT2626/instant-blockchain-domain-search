@@ -6,7 +6,7 @@ import { NFTContractAddresses, Providers } from './constants';
 
 const GRAPHQL_ENDPOINT = 'https://api.thegraph.com/subgraphs/name/saleel/domain-availability';
 const NEAR_RPC = 'https://rpc.mainnet.near.org/';
-const WEB2_API = 'http://localhost:9000/';
+const WEB2_API = 'https://blockchain-domain-search.herokuapp.com/';
 const OPENSEA_API = 'https://api.opensea.io/api/v1';
 const OPENSEA_TOKEN = 'f87d8ef226cd45b0b89d7c4b001ff74d';
 
