@@ -27,7 +27,8 @@ server.get('/', async (request) => {
 
 const start = async () => {
   try {
-    await server.listen(process.env.PORT || 9000);
+    console.log("Starting on port", process.env.PORT || 9000);
+    await server.listen(Number(process.env.PORT) || 9000);
   } catch (err) {
     server.log.error(err)
     process.exit(1)
