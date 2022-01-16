@@ -55,44 +55,54 @@ function App() {
   };
 
   return (
-    <div id="app">
-      <div className="container">
+    <div id="app" className="container">
 
-        <input
-          type="text"
-          className="input input-domain is-large"
-          onInput={onNameChange}
-          value={name}
-        />
-
-        <div>
-          {Object.keys(ProviderTLDMapping).map((provider) => (
-            <div className="provider-container">
-              <div className={`provider-logo provider-${provider}`}>
-                <img alt={provider} title={provider} src={`/assets/${provider.toLowerCase()}.png`} />
-              </div>
-
-              <div className="tld-container">
-                {ProviderTLDMapping[provider].map((tld) => {
-                  const domainListing = domainListings.find((d) => d.name === `${name}.${tld}`);
-
-                  return (
-                    <TLDBadge
-                      isReady={isProviderReady[provider]}
-                      name={name}
-                      provider={provider}
-                      tld={tld}
-                      tldInfo={allProvideResult[TLDResponseMapping[tld]]}
-                      listing={domainListing}
-                    />
-                  );
-                })}
-              </div>
-            </div>
-          ))}
-        </div>
-
+      <div className="header">
+        <h1 className="title">Instant Blockchain Domain Search</h1>
+        <h2 className="subtitle">Search domain availability across various blockchain name providers</h2>
       </div>
+
+      <input
+        type="text"
+        className="input input-domain is-large"
+        onInput={onNameChange}
+        value={name}
+        placeholder="Domain name"
+      />
+
+      <div style={{ flexGrow: 1 }}>
+        {Object.keys(ProviderTLDMapping).map((provider) => (
+          <div className="provider-container">
+            <div className={`provider-logo provider-${provider}`}>
+              <img alt={provider} title={provider} src={`/assets/${provider.toLowerCase()}.png`} />
+            </div>
+
+            <div className="tld-container">
+              {ProviderTLDMapping[provider].map((tld) => {
+                const domainListing = domainListings.find((d) => d.name === `${name}.${tld}`);
+
+                return (
+                  <TLDBadge
+                    isReady={isProviderReady[provider]}
+                    name={name}
+                    provider={provider}
+                    tld={tld}
+                    tldInfo={allProvideResult[TLDResponseMapping[tld]]}
+                    listing={domainListing}
+                  />
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="copyright">
+        Copyright &copy; 2022. Made with ♥ by
+        {' '}
+        <a target="_blank" href="https://github.com/saleel/" rel="noreferrer">Saleel</a>
+      </div>
+
     </div>
   );
 }
