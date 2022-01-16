@@ -7,14 +7,14 @@ import { NewURI } from "../generated/UnstoppableCNS/UnstoppableCNS"
 import { NewURI as NewURI_UNS } from "../generated/UnstoppableUNS/UnstoppableUNS"
 import { DomainName, DomainTLD } from "../generated/schema"
 
-export function handleNameRegistered(event: NameRegistered): void {
+export function handleEnsNameRegistered(event: NameRegistered): void {
   const name = event.params.name;
 
   let entity = DomainName.load(name);
 
   if (!entity) {
     entity = new DomainName(name);
-    entity.name = name + '.eth';
+    entity.name = name;
   }
 
   const tldId = `${name}_eth`;
@@ -31,7 +31,7 @@ export function handleNameRegistered(event: NameRegistered): void {
   entity.save()
 }
 
-export function handleNameRenewed(event: NameRenewed): void { 
+export function handleEnsNameRenewed(event: NameRenewed): void { 
   const name = event.params.name;
   let entity = DomainName.load(name);
 
@@ -50,7 +50,7 @@ export function handleNameRenewed(event: NameRenewed): void {
   tld.save();
 }
 
-export function handleNewURI(event: NewURI): void {
+export function handleCnsNameRenewed(event: NewURI): void {
   if (!event.params.uri) {
     return;
   }
@@ -90,7 +90,7 @@ export function handleNewURI(event: NewURI): void {
 }
 
 
-export function handleNewURI_UNS(event: NewURI_UNS): void {
+export function handleUnsNameRenewed(event: NewURI_UNS): void {
   if (!event.params.uri) {
     return;
   }
@@ -107,7 +107,7 @@ export function handleNewURI_UNS(event: NewURI_UNS): void {
   let entity = DomainName.load(name);
   if (!entity) {
     entity = new DomainName(name);
-    entity.name = event.params.uri;
+    entity.name = name;
   }
 
   const tldId = `${name}_${tldName}`;

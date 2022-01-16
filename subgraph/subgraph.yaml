@@ -22,9 +22,9 @@ dataSources:
           file: ./abis/ENSRegistrarController.json
       eventHandlers:
         - event: NameRegistered(string,indexed bytes32,indexed address,uint256,uint256)
-          handler: handleNameRegistered
+          handler: handleEnsNameRegistered
         - event: NameRenewed(string,indexed bytes32,uint256,uint256)
-          handler: handleNameRenewed
+          handler: handleEnsNameRenewed
       file: ./src/mapping.ts
   - kind: ethereum
     name: UnstoppableCNS
@@ -44,7 +44,7 @@ dataSources:
           file: ./abis/UnstoppableCNS.json
       eventHandlers:
         - event: NewURI(indexed uint256,string)
-          handler: handleNewURI
+          handler: handleCnsNameRenewed
       file: ./src/mapping.ts
   - kind: ethereum
     name: UnstoppableUNS
@@ -64,5 +64,5 @@ dataSources:
           file: ./abis/UnstoppableUNS.json
       eventHandlers:
         - event: NewURI(indexed uint256,string)
-          handler: handleNewURI_UNS
+          handler: handleUnsNameRenewed
       file: ./src/mapping.ts
