@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const GRAPHQL_ENDPOINT = 'http://localhost:8000/subgraphs/name/saleel/domains';
+const GRAPHQL_ENDPOINT = 'https://api.thegraph.com/subgraphs/name/saleel/domain-availability';
 const NEAR_RPC = 'https://rpc.mainnet.near.org/';
 const WEB2_API = 'http://localhost:9000/';
 
