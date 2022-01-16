@@ -60,28 +60,34 @@ function App() {
 
         <input
           type="text"
-          className="input input-domain"
+          className="input input-domain is-large"
           onInput={onNameChange}
           value={name}
         />
 
-        <div className="tld-container">
+        <div>
           {Object.keys(ProviderTLDMapping).map((provider) => (
             <div className="provider-container">
-              {ProviderTLDMapping[provider].map((tld) => {
-                const domainListing = domainListings.find((d) => d.name === `${name}.${tld}`);
+              <div className={`provider-logo provider-${provider}`}>
+                <img alt={provider} title={provider} src={`/assets/${provider.toLowerCase()}.png`} />
+              </div>
 
-                return (
-                  <TLDBadge
-                    isReady={isProviderReady[provider]}
-                    name={name}
-                    provider={provider}
-                    tld={tld}
-                    tldInfo={allProvideResult[TLDResponseMapping[tld]]}
-                    listing={domainListing}
-                  />
-                );
-              })}
+              <div className="tld-container">
+                {ProviderTLDMapping[provider].map((tld) => {
+                  const domainListing = domainListings.find((d) => d.name === `${name}.${tld}`);
+
+                  return (
+                    <TLDBadge
+                      isReady={isProviderReady[provider]}
+                      name={name}
+                      provider={provider}
+                      tld={tld}
+                      tldInfo={allProvideResult[TLDResponseMapping[tld]]}
+                      listing={domainListing}
+                    />
+                  );
+                })}
+              </div>
             </div>
           ))}
         </div>
